@@ -1,17 +1,20 @@
 <?php
+// $servername = "talamdan.cctcccs.com";
+// $username = "u654466566_talamdan";
+// $password = "Talamdangroup3";
+// $database = "u654466566_talamdan";
 
-$host = "talamdan.cctcccs.com";                 
-$dbname = "u654466566_talamdan";        // Database name
-$username = "u654466566_talamdan";    // Database username
-$password = "Talamdangroup3";   // Database password
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "u654466566_talamdan";
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $database);
 
-// Establish connection to MySQL database
-$conn = new mysqli($host, $username, $password, $dbname);
-
-// Check if connection established successfully
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected to database";
+// } else {
+//     echo "Connected successfully";
 }
