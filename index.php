@@ -13,7 +13,7 @@ include 'login.php';
 </head>
 <body>
   <div>
-    <form action="login.php" method="post">
+    <form action="" method="post">
       <label for="username">Username:</label><br>
       <input type="text" id="username" name="username"><br>
       <label for="password">Password:</label><br>

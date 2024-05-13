@@ -12,7 +12,7 @@ include 'insert.php';
 
 </head>
 <body>
-  <form action="signup.php" method="post">
+  <form action="" method="post">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" placeholder="Username" required><br>
 
