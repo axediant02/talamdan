@@ -1,41 +1,49 @@
-<?php
-session_start();
+<?php 
+session_start(); 
 include "connect.php";
 
-if (isset($_POST['submit'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
+if (isset($_POST['uname']) && isset($_POST['password'])) {
 
-    $query = "SELECT * FROM student WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
+	function validate($data){
+       $data = trim($data);
+	   $data = stripslashes($data);
+	   $data = htmlspecialchars($data);
+	   return $data;
+	}
 
-    if ($result) {
-        if (mysqli_num_rows($result) > 0) {
-            $user = mysqli_fetch_assoc($result);
+	$uname = validate($_POST['uname']);
+	$pass = validate($_POST['password']);
 
-            // Verify password using password_verify
-            if (password_verify($password, $user['password'])) {
-                // Password matches, set session variables for logged-in user
-                $_SESSION['uid'] = $user['uid'];
-                $_SESSION['username'] = $user['username'];
-                // Redirect to dashboard or logged-in page
-                header("Location: dashboard.html");
-                exit;
-            } else {
-                // Invalid password
-                echo 'Incorrect password. Please try again.';
-            }
-        } else {
-            // User not found
-            echo 'Username not found. Please check your username or register a new account.';
-        }
-    } else {
-        // Error in database query
-        $error_list = mysqli_error_list($conn);
-        foreach ($error_list as $error) {
-            echo "Error: $error<br>";
-        }
-    }
+	if (empty($uname)) {
+		header("Location: index.php?error=User Name is required");
+	    exit();
+	}else if(empty($pass)){
+        header("Location: index.php?error=Password is required");
+	    exit();
+	}else{
+		$sql = "SELECT * FROM user WHERE username='$uname' AND password='$pass'";
 
-    mysqli_close($conn);
+		$result = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($result) === 1) {
+			$row = mysqli_fetch_assoc($result);
+            if ($row['username'] === $uname && $row['password'] === $pass) {
+            	$_SESSION['user_name'] = $row['user_name'];
+            	$_SESSION['username'] = $row['username'];
+            	$_SESSION['id'] = $row['id'];
+            	header("Location: dashboard.html");
+		        exit();
+            }else{
+				header("Location: index.php?error=Incorect User name or password");
+		        exit();
+			}
+		}else{
+			header("Location: index.php?error=Incorect User name or password");
+	        exit();
+		}
+	}
+	
+}else{
+	header("Location: index.php");
+	exit();
 }
