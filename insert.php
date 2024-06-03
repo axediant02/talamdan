@@ -5,8 +5,8 @@ include "connect.php"; // Include your database connection script
 if(isset($_POST['submit'])) {
   // Get and sanitize user inputs
   $username = mysqli_real_escape_string($conn, $_POST['username']);
-  $email = mysqli_real_escape_string($conn, $_POST['email']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
   $confirmPassword = mysqli_real_escape_string($conn, $_POST['confirmPassword']); // Retrieve confirmation password
 
   // Password validation
@@ -16,7 +16,7 @@ if(isset($_POST['submit'])) {
   }
 
   // Check if username already exists
-  $check_user = "SELECT * FROM student WHERE username='$username'";
+  $check_user = "SELECT * FROM user WHERE username='$username'";
   $result = mysqli_query($conn, $check_user);
 
   if(!$result) {
@@ -31,7 +31,7 @@ if(isset($_POST['submit'])) {
     exit;
   } else {
     // Insert user into the database without hashing the password (for testing purposes)
-    $insert_user = "INSERT INTO student (sid, username, email, password) VALUES (0, '$username', '$email', '$password')";
+    $insert_user = "INSERT INTO user (uid, username, email, password) VALUES (0, '$username', '$email', '$password')";
     
     if(mysqli_query($conn, $insert_user)) {
       header("Location: registered.php");
@@ -42,4 +42,3 @@ if(isset($_POST['submit'])) {
 
   mysqli_close($conn); // Close the database connection
 }
-?>

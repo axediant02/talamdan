@@ -1,5 +1,5 @@
 <?php
-// $servername = "talamdan.cctcccs.com";
+// $servername = "localhost";
 // $username = "u654466566_talamdan";
 // $password = "Talamdangroup3";
 // $database = "u654466566_talamdan";

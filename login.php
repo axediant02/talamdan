@@ -1,27 +1,23 @@
 <?php
-session_start(); // Start session to manage user login state
-include "connect.php"; // Include your database connection script
+session_start();
+include "connect.php";
 
 if (isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Retrieve user record by username
     $query = "SELECT * FROM student WHERE username='$username'";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-        // Check if user with the provided username exists
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
 
             // Verify password using password_verify
             if (password_verify($password, $user['password'])) {
                 // Password matches, set session variables for logged-in user
-                $_SESSION['user_id'] = $user['sid'];
+                $_SESSION['uid'] = $user['uid'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
-
                 // Redirect to dashboard or logged-in page
                 header("Location: dashboard.html");
                 exit;
@@ -35,9 +31,11 @@ if (isset($_POST['submit'])) {
         }
     } else {
         // Error in database query
-        echo 'Error: ' . mysqli_error($conn);
+        $error_list = mysqli_error_list($conn);
+        foreach ($error_list as $error) {
+            echo "Error: $error<br>";
+        }
     }
 
-    // Close the database connection
     mysqli_close($conn);
 }
